@@ -1,4 +1,4 @@
-// LOGIN
+// ============ LOGIN ============
 const LOGIN_USER = "admin";
 const LOGIN_PASS = "1234";
 
@@ -39,14 +39,17 @@ logoutBtn.addEventListener("click", function () {
   loginForm.reset();
 });
 
-// CRUD de gastos
+// ============ CRUD DE GASTOS ============
 const STORAGE_KEY = "expenses";
 
 const expenseForm = document.getElementById("expense-form");
+const expenseIdInput = document.getElementById("expense-id");
 const expenseDescInput = document.getElementById("expense-desc");
 const expenseAmountInput = document.getElementById("expense-amount");
 const expenseCategoryInput = document.getElementById("expense-category");
 const expenseDateInput = document.getElementById("expense-date");
+const expenseSubmitBtn = document.getElementById("expense-submit-btn");
+const expenseCancelBtn = document.getElementById("expense-cancel-btn");
 const expenseTableBody = document.getElementById("expense-table-body");
 const expenseTotalEl = document.getElementById("expense-total");
 const expenseEmptyMsg = document.getElementById("expense-empty");
@@ -73,11 +76,22 @@ function renderExpenses() {
       <td>$${parseFloat(expense.amount).toFixed(2)}</td>
       <td>${expense.category}</td>
       <td>${expense.date}</td>
+      <td class="row-actions">
+        <button class="btn-edit" data-id="${expense.id}">Editar</button>
+        <button class="btn-delete" data-id="${expense.id}">Eliminar</button>
+      </td>
     `;
     expenseTableBody.appendChild(row);
   });
 
   expenseTotalEl.textContent = "$" + total.toFixed(2);
+
+  document.querySelectorAll(".btn-edit").forEach(function (btn) {
+    btn.addEventListener("click", function () { startEdit(btn.dataset.id); });
+  });
+  document.querySelectorAll(".btn-delete").forEach(function (btn) {
+    btn.addEventListener("click", function () { deleteExpense(btn.dataset.id); });
+  });
 }
 
 expenseForm.addEventListener("submit", function (e) {
@@ -88,18 +102,58 @@ expenseForm.addEventListener("submit", function (e) {
     return;
   }
 
+  const id = expenseIdInput.value;
   const expenses = getExpenses();
-  expenses.push({
-    id: Date.now().toString(),
+
+  const expenseData = {
+    id: id || Date.now().toString(),
     description: expenseDescInput.value.trim(),
     amount: expenseAmountInput.value,
     category: expenseCategoryInput.value,
     date: expenseDateInput.value,
-  });
+  };
+
+  if (id) {
+    const index = expenses.findIndex(function (exp) { return exp.id === id; });
+    if (index !== -1) expenses[index] = expenseData;
+  } else {
+    expenses.push(expenseData);
+  }
 
   saveExpenses(expenses);
-  expenseForm.reset();
+  resetForm();
   renderExpenses();
 });
+
+function startEdit(id) {
+  const expenses = getExpenses();
+  const expense = expenses.find(function (exp) { return exp.id === id; });
+  if (!expense) return;
+
+  expenseIdInput.value = expense.id;
+  expenseDescInput.value = expense.description;
+  expenseAmountInput.value = expense.amount;
+  expenseCategoryInput.value = expense.category;
+  expenseDateInput.value = expense.date;
+
+  expenseSubmitBtn.textContent = "Guardar cambios";
+  expenseCancelBtn.style.display = "inline-block";
+}
+
+function deleteExpense(id) {
+  if (!confirm("¿Eliminar este gasto?")) return;
+  const expenses = getExpenses().filter(function (exp) { return exp.id !== id; });
+  saveExpenses(expenses);
+  renderExpenses();
+}
+
+expenseCancelBtn.addEventListener("click", resetForm);
+
+function resetForm() {
+  expenseForm.reset();
+  expenseIdInput.value = "";
+  expenseSubmitBtn.textContent = "Agregar";
+  expenseCancelBtn.style.display = "none";
+}
 
 checkSession();
