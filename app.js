@@ -1,4 +1,4 @@
-// ============ LOGIN ============
+//LOGIN 
 const LOGIN_USER = "admin";
 const LOGIN_PASS = "1234";
 
@@ -62,6 +62,11 @@ function saveExpenses(expenses) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses));
 }
 
+function formatDate(isoDate) {
+  const [year, month, day] = isoDate.split("-");
+  return `${day}/${month}/${year}`;
+}
+
 function renderExpenses() {
   const expenses = getExpenses();
   expenseTableBody.innerHTML = "";
@@ -75,7 +80,7 @@ function renderExpenses() {
       <td>${expense.description}</td>
       <td>$${parseFloat(expense.amount).toFixed(2)}</td>
       <td>${expense.category}</td>
-      <td>${expense.date}</td>
+      <td>${formatDate(expense.date)}</td>
       <td class="row-actions">
         <button class="btn-edit" data-id="${expense.id}">Editar</button>
         <button class="btn-delete" data-id="${expense.id}">Eliminar</button>
