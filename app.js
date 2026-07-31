@@ -12,6 +12,7 @@ function checkSession() {
   if (sessionStorage.getItem("loggedIn") === "true") {
     loginScreen.style.display = "none";
     appScreen.style.display = "block";
+    renderExpenses();
   }
 }
 
@@ -25,6 +26,7 @@ loginForm.addEventListener("submit", function (e) {
     loginError.textContent = "";
     loginScreen.style.display = "none";
     appScreen.style.display = "block";
+    renderExpenses();
   } else {
     loginError.textContent = "Usuario o contraseña incorrectos.";
   }
@@ -37,7 +39,7 @@ logoutBtn.addEventListener("click", function () {
   loginForm.reset();
 });
 
-//CRUD de gastos
+// CRUD de gastos
 const STORAGE_KEY = "expenses";
 
 const expenseForm = document.getElementById("expense-form");
@@ -45,6 +47,9 @@ const expenseDescInput = document.getElementById("expense-desc");
 const expenseAmountInput = document.getElementById("expense-amount");
 const expenseCategoryInput = document.getElementById("expense-category");
 const expenseDateInput = document.getElementById("expense-date");
+const expenseTableBody = document.getElementById("expense-table-body");
+const expenseTotalEl = document.getElementById("expense-total");
+const expenseEmptyMsg = document.getElementById("expense-empty");
 
 function getExpenses() {
   return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -52,6 +57,27 @@ function getExpenses() {
 
 function saveExpenses(expenses) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses));
+}
+
+function renderExpenses() {
+  const expenses = getExpenses();
+  expenseTableBody.innerHTML = "";
+  expenseEmptyMsg.style.display = expenses.length === 0 ? "block" : "none";
+
+  let total = 0;
+  expenses.forEach(function (expense) {
+    total += parseFloat(expense.amount);
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${expense.description}</td>
+      <td>$${parseFloat(expense.amount).toFixed(2)}</td>
+      <td>${expense.category}</td>
+      <td>${expense.date}</td>
+    `;
+    expenseTableBody.appendChild(row);
+  });
+
+  expenseTotalEl.textContent = "$" + total.toFixed(2);
 }
 
 expenseForm.addEventListener("submit", function (e) {
@@ -73,7 +99,7 @@ expenseForm.addEventListener("submit", function (e) {
 
   saveExpenses(expenses);
   expenseForm.reset();
-  alert("Gasto agregado.");
+  renderExpenses();
 });
 
 checkSession();
