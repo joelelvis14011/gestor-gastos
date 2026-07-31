@@ -40,6 +40,23 @@
       <input type="date" id="expense-date" required>
       <button type="submit">Agregar</button>
     </form>
+
+    <div class="card">
+      <h2>Historial de gastos</h2>
+      <p>Total gastado: <strong id="expense-total">$0.00</strong></p>
+      <table id="expense-table">
+        <thead>
+          <tr>
+            <th>Descripción</th>
+            <th>Monto</th>
+            <th>Categoría</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody id="expense-table-body"></tbody>
+      </table>
+      <p id="expense-empty" style="display:none">No hay gastos registrados todavía.</p>
+    </div>
   </section>
 
   <script src="app.js"></script>
