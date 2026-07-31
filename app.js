@@ -1,4 +1,4 @@
-
+// LOGIN
 const LOGIN_USER = "admin";
 const LOGIN_PASS = "1234";
 
@@ -35,6 +35,45 @@ logoutBtn.addEventListener("click", function () {
   appScreen.style.display = "none";
   loginScreen.style.display = "flex";
   loginForm.reset();
+});
+
+//CRUD de gastos
+const STORAGE_KEY = "expenses";
+
+const expenseForm = document.getElementById("expense-form");
+const expenseDescInput = document.getElementById("expense-desc");
+const expenseAmountInput = document.getElementById("expense-amount");
+const expenseCategoryInput = document.getElementById("expense-category");
+const expenseDateInput = document.getElementById("expense-date");
+
+function getExpenses() {
+  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+}
+
+function saveExpenses(expenses) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses));
+}
+
+expenseForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  if (parseFloat(expenseAmountInput.value) <= 0) {
+    alert("El monto debe ser mayor a 0");
+    return;
+  }
+
+  const expenses = getExpenses();
+  expenses.push({
+    id: Date.now().toString(),
+    description: expenseDescInput.value.trim(),
+    amount: expenseAmountInput.value,
+    category: expenseCategoryInput.value,
+    date: expenseDateInput.value,
+  });
+
+  saveExpenses(expenses);
+  expenseForm.reset();
+  alert("Gasto agregado.");
 });
 
 checkSession();

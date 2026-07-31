@@ -24,7 +24,22 @@
       <h1>Mis Gastos</h1>
       <button id="logout-btn">Cerrar sesión</button>
     </header>
-    <p>Próximamente: formulario y listado de gastos.</p>
+
+    <form id="expense-form" class="card">
+      <h2>Agregar gasto</h2>
+      <input type="text" id="expense-desc" placeholder="Descripción" required>
+      <input type="number" id="expense-amount" placeholder="Monto" step="0.01" required>
+      <select id="expense-category" required>
+        <option value="">Categoría</option>
+        <option value="Comida">Comida</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Vivienda">Vivienda</option>
+        <option value="Entretenimiento">Entretenimiento</option>
+        <option value="Otros">Otros</option>
+      </select>
+      <input type="date" id="expense-date" required>
+      <button type="submit">Agregar</button>
+    </form>
   </section>
 
   <script src="app.js"></script>
