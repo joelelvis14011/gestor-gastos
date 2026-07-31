@@ -54,7 +54,7 @@ button {
 
 button:hover { background: #1d4ed8; }
 
-#logout-btn { background: #6b7280; }
+#logout-btn, #expense-cancel-btn { background: #6b7280; }
 
 header {
   display: flex;
@@ -88,3 +88,12 @@ th, td {
   border-bottom: 1px solid #e5e7eb;
   font-size: 14px;
 }
+
+.row-actions button {
+  padding: 5px 10px;
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+.btn-delete { background: #dc2626; }
+.btn-delete:hover { background: #b91c1c; }
