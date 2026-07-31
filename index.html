@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Gestor de Gastos Personales</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <section id="login-screen" class="screen">
+    <form id="login-form" class="card">
+      <h1>Gestor de Gastos</h1>
+      <p>Inicia sesión para continuar</p>
+      <input type="text" id="login-user" placeholder="Usuario" required>
+      <input type="password" id="login-pass" placeholder="Contraseña" required>
+      <button type="submit">Entrar</button>
+      <p id="login-error" class="error"></p>
+      <small>Usuario: admin / Contraseña: 1234</small>
+    </form>
+  </section>
+
+  <section id="app-screen" class="screen" style="display:none">
+    <header>
+      <h1>Mis Gastos</h1>
+      <button id="logout-btn">Cerrar sesión</button>
+    </header>
+    <p>Próximamente: formulario y listado de gastos.</p>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
