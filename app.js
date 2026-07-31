@@ -1,4 +1,4 @@
-// ============ LOGIN ============
+
 const LOGIN_USER = "admin";
 const LOGIN_PASS = "1234";
 
